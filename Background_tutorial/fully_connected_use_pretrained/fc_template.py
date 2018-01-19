@@ -52,7 +52,7 @@ def main(unused_argv):
         train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
 
     with tf.name_scope('accuracy'):
-        correct_prediction = tf.equal(tf.argmax(y_conv, 1), tf.argmax(y_, 1))
+        correct_prediction = tf.equal(tf.argmax(y_conv, 1, name="output"), tf.argmax(y_, 1, name="target"))
         correct_prediction = tf.cast(correct_prediction, tf.float32)
     accuracy = tf.reduce_mean(correct_prediction, name="predict_op")
 
