@@ -77,7 +77,7 @@ def main(unused_argv):
 
     saver = tf.train.Saver()
 
-    with tf.Session() as sess:
+    with tf.Session(config=tf.ConfigProto(log_device_placement=True)) as sess:
         sess.run(tf.global_variables_initializer())
         for i in range(20000):
             batch = training.next_batch(20)

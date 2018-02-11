@@ -60,7 +60,7 @@ def main(unused_argv):
 
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
-        for i in range(20000):
+        for i in range(2000):
             batch = training.next_batch(20)
             arr = convertLabels(batch[1])
             if i % 1000 == 0:
