@@ -1,0 +1,4 @@
+Models using Keras
+1. simple_example: small cnn model, iris problem
+2. large_data_example: large cnn model, 570 team project with 900 samples
+3. residual_example: 18 layers resnet model, 570 team project with 900 samples.
