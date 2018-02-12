@@ -9,13 +9,14 @@ from keras.layers import Activation
 from keras.models import load_model
 from keras import backend as K
 from keras import optimizers
+import matplotlib.pyplot as plt
 import util
 
 FILE = 'samples.csv'
 
 batch_size = 64
 num_classes = 9
-epochs = 2000
+epochs = 30
 
 training_data, training_target, testing_data, testing_target = util.read_csv(FILE)
 
@@ -51,13 +52,36 @@ model.compile(loss='categorical_crossentropy',
               optimizer=rmsprop,
               metrics=['accuracy'])
 
-model.fit(training_data, training_target,
-          batch_size=batch_size,
-          epochs=epochs,
-          verbose=2,
-          validation_data=(testing_data, testing_target))
+history = model.fit(training_data, training_target,
+                    batch_size=batch_size,
+                    epochs=epochs,
+                    verbose=2,
+                    validation_data=(testing_data, testing_target))
 score = model.evaluate(testing_data, testing_target, verbose=0)
 print('Test loss: ', score[0])
 print('Test accuracy: ', score[1])
 
 model.save('model_1')
+
+print(history.history.keys())
+
+# summarize history for accuracy
+plt.plot(history.history['acc'])
+plt.plot(history.history['val_acc'])
+plt.title("model accuracy")
+plt.ylabel('accuracy')
+plt.xlabel('epoch')
+plt.legend(['train', 'test'], loc='upper left')
+plt.show()
+
+# summarize history for loss
+plt.plot(history.history['loss'])
+plt.plot(history.history['val_loss'])
+plt.title("model loss")
+plt.ylabel('loss')
+plt.xlabel('epoch')
+plt.legend(['train', 'test'], loc='upper left')
+plt.show()
+
+
+
