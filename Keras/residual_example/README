@@ -1,0 +1,3 @@
+This resnet model contains 18 hidden layers, it needs much longer time to be trained,
+however, since it is deeper than traditional cnn model, it is expected to learn better
+than cnn model.
