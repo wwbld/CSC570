@@ -4,6 +4,7 @@ import keras
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Flatten, Reshape
 from keras.layers import Conv2D, MaxPooling2D, BatchNormalization, Activation
+from keras.layers.advanced_activations import PReLU, LeakyReLU
 from keras import backend as K
 import matplotlib.pyplot as plt
 import util
@@ -13,7 +14,7 @@ TEST = 'iris_test.csv'
 
 batch_size = 20
 num_classes = 3
-epochs = 60
+epochs = 80
 
 training_data, training_target = util.read_csv(TRAIN)
 testing_data, testing_target = util.read_csv(TEST)
@@ -26,19 +27,19 @@ model = Sequential()
 model.add(Reshape((2,2,1), input_shape=(4,)))
 model.add(Conv2D(32, kernel_size=(2,2)))
 model.add(BatchNormalization())
-model.add(Activation('relu'))
+model.add(LeakyReLU())
 model.add(Flatten())
 
 model.add(Dense(7))
 model.add(BatchNormalization())
-model.add(Activation('softmax'))
+model.add(LeakyReLU())
 
 model.add(Dense(3))
 model.add(BatchNormalization())
 model.add(Activation('softmax'))
 
 model.compile(loss=keras.losses.categorical_crossentropy,
-              optimizer=keras.optimizers.Adam(),
+              optimizer=keras.optimizers.Nadam(),
               metrics=['accuracy'])
 
 history = model.fit(training_data, training_target,

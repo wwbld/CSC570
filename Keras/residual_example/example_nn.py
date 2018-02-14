@@ -6,7 +6,6 @@ from keras.layers import Input, Dense, Dropout, Flatten, Reshape
 from keras.layers import Conv2D, MaxPooling2D, GlobalAveragePooling2D
 from keras.layers import BatchNormalization
 from keras.layers import Activation
-from keras.models import load_model
 from keras import backend as K
 from keras import optimizers
 from residual_block import residual_block

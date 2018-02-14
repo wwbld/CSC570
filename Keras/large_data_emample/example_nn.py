@@ -6,7 +6,7 @@ from keras.layers import Dense, Dropout, Flatten, Reshape
 from keras.layers import Conv2D, MaxPooling2D
 from keras.layers import BatchNormalization
 from keras.layers import Activation
-from keras.models import load_model
+from keras.layers.advanced_activations import PReLU, LeakyReLU
 from keras import backend as K
 from keras import optimizers
 import matplotlib.pyplot as plt
@@ -28,28 +28,25 @@ model = Sequential()
 model.add(Reshape((64,64,3), input_shape=(12288,)))
 model.add(Conv2D(32, kernel_size=(3,3)))
 model.add(BatchNormalization())
-model.add(Activation('relu'))
+model.add(LeakyReLU())
 
 model.add(Conv2D(64, kernel_size=(3,3)))
 model.add(BatchNormalization())
-model.add(Activation('relu'))
+model.add(LeakyReLU())
 
 model.add(MaxPooling2D(pool_size=(2,2)))
-model.add(Dropout(0.25))
 model.add(Flatten())
 
 model.add(Dense(128))
 model.add(BatchNormalization())
-model.add(Activation('softmax'))
+model.add(LeakyReLU())
 
-model.add(Dropout(0.5))
 model.add(Dense(num_classes))
 model.add(BatchNormalization())
 model.add(Activation('softmax'))
 
-rmsprop = optimizers.RMSprop(lr=0.002)
 model.compile(loss='categorical_crossentropy',
-              optimizer=rmsprop,
+              optimizer=optimizers.Nadam(),
               metrics=['accuracy'])
 
 history = model.fit(training_data, training_target,
