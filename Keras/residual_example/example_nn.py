@@ -6,6 +6,7 @@ from keras.layers import Input, Dense, Dropout, Flatten, Reshape
 from keras.layers import Conv2D, MaxPooling2D, GlobalAveragePooling2D
 from keras.layers import BatchNormalization
 from keras.layers import Activation
+from keras.layers.advanced_activations import LeakyReLU
 from keras import backend as K
 from keras import optimizers
 from residual_block import residual_block
@@ -27,7 +28,8 @@ input = Input(shape=(12288,))
 reshape = Reshape((64,64,3))(input)
 
 # conv1
-block = Conv2D(64, kernel_size=(7,7), strides=(2,2), activation='relu')(reshape)
+block = Conv2D(64, kernel_size=(7,7), strides=(2,2))(reshape)
+block = LeakyReLU()(block)
 
 # conv2
 block = MaxPooling2D(pool_size=(3,3), strides=(2,2), padding='same')(block)
@@ -49,7 +51,8 @@ for i in range(2):
 for i in range(2):
     strides = (2,2) if i==0 else (1,1)
     block = residual_block(block, 512, 512, strides=strides)
-block = Activation('relu')(block)
+block = BatchNormalization()(block)
+block = LeakyReLU()(block)
 
 block = GlobalAveragePooling2D()(block)
 dense = Dense(num_classes)(block)
@@ -58,9 +61,8 @@ dense = Activation('softmax')(dense)
 
 model = Model(inputs=input, outputs=dense)
 
-rmsprop = optimizers.RMSprop(lr=0.002)
 model.compile(loss='categorical_crossentropy',
-              optimizer=rmsprop,
+              optimizer=optimizers.Nadam(),
               metrics=['accuracy'])
 
 history = model.fit(training_data, training_target,
@@ -79,12 +81,18 @@ print(history.history.keys())
 # summarize history for accuracy
 plt.plot(history.history['acc'])
 plt.plot(history.history['val_acc'])
-plt.plot(history.history['loss'])
-plt.plot(history.history['val_loss'])
 plt.title("model accuracy")
 plt.ylabel('accuracy')
 plt.xlabel('epoch')
-plt.legend(['train_acc', 'test_acc', 'train_loss', 'test_loss'], loc='upper left')
+plt.legend(['train', 'test'], loc='upper left')
 plt.show()
 
+# summarize history for loss
+plt.plot(history.history['loss'])
+plt.plot(history.history['val_loss'])
+plt.title("model loss")
+plt.ylabel('loss')
+plt.xlabel('epoch')
+plt.legend(['train', 'test'], loc='upper left')
+plt.show()
 
