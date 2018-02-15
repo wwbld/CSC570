@@ -29,6 +29,7 @@ reshape = Reshape((64,64,3))(input)
 
 # conv1
 block = Conv2D(64, kernel_size=(7,7), strides=(2,2))(reshape)
+block = BatchNormalization()(block)
 block = LeakyReLU()(block)
 
 # conv2
