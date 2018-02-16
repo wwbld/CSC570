@@ -2,4 +2,6 @@ Models using Keras
 1. simple_example: small cnn model, iris problem
 2. large_data_example: large cnn model, 570 team project with 900 samples
 3. residual_example: 18 layers resnet model, 570 team project with 900 samples.
-4. transfer_example: currently using VGG16 as pre-trained model, this is not very suitable for our face recognition task since this model is not trained by human's faces. However, after replacing its output layer with our own (because we have a different num_classes) and leave the rest of its layers untouched, it gives us 96% accuracy in 4 mins, where our cnn model needs 20 mins to get this result.
+4. transfer_example: VGG16 model, output layer replaced by our own, 570 team project with 900 samples.
+
+Notes for transfer_example: currently using VGG16 as pre-trained model, this is not very suitable for our face recognition task since this model is not trained by human's faces. However, after replacing its output layer with our own (because we have a different num_classes) and leave the rest of its layers untouched, it gives us 96% accuracy in 4 mins, where our cnn model needs 20 mins to get this result.
