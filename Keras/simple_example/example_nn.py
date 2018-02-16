@@ -5,8 +5,9 @@ from keras.models import Sequential
 from keras.layers import Dense, Dropout, Flatten, Reshape
 from keras.layers import Conv2D, MaxPooling2D, BatchNormalization, Activation
 from keras.layers.advanced_activations import PReLU, LeakyReLU
-from keras import backend as K
+from keras.callbacks import TensorBoard
 import matplotlib.pyplot as plt
+from time import time
 import util
 
 TRAIN = 'iris_training.csv'
@@ -14,7 +15,7 @@ TEST = 'iris_test.csv'
 
 batch_size = 20
 num_classes = 3
-epochs = 80
+epochs = 30
 
 training_data, training_target = util.read_csv(TRAIN)
 testing_data, testing_target = util.read_csv(TEST)
@@ -39,14 +40,16 @@ model.add(BatchNormalization())
 model.add(Activation('softmax'))
 
 model.compile(loss=keras.losses.categorical_crossentropy,
-              optimizer=keras.optimizers.Nadam(),
+              optimizer='rmsprop',
               metrics=['accuracy'])
 
+tensorboard = TensorBoard(log_dir="logs{}".format(time()))
 history = model.fit(training_data, training_target,
                     batch_size=batch_size,
                     epochs=epochs,
                     verbose=2,
-                    validation_data=(testing_data, testing_target))
+                    validation_data=(testing_data, testing_target),
+                    callbacks=[tensorboard])
 score = model.evaluate(testing_data, testing_target, verbose=0)
 print('Test loss: ', score[0])
 print('Test accuracy: ', score[1])
