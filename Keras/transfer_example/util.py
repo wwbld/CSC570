@@ -60,19 +60,23 @@ def str2int(s):
 def str2float(s):
     return float(s)
 
+# 0 means discard, 1 means train, 2 means test
+# currently, 25% will be training data, 5% will be testing data
 def create_sample_file():
     files = [join("./data", f) for f in listdir("./data") \
              if isfile(join("./data", f))]
     myfile = open("samples.csv", 'w')
     writer = csv.writer(myfile)
-    my_list = [0]*30 + [1]*70
+    my_list = [0]*70 + [1]*25 + [2]*5
     for m in range(len(files)):
         with open(files[m]) as csvfile:
-            for line in csvfile:
-                row = line.strip().split(",")
-                row[-1] = row[-1][1:]
-                row.append(random.choice(my_list))
-                writer.writerow(row)
+            temp = random.choice(my_list)
+            if temp != 0:
+                for line in csvfile:
+                    row = line.strip().split(",")
+                    row[-1] = row[-1][1:]
+                    row.append(temp)
+                    writer.writerow(row)
 
 def read_csv(filename):
     training_features = []

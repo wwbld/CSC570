@@ -43,7 +43,6 @@ model.compile(loss=keras.losses.categorical_crossentropy,
               optimizer='rmsprop',
               metrics=['accuracy'])
 
-tensorboard = TensorBoard(log_dir="logs{}".format(time()))
 history = model.fit(training_data, training_target,
                     batch_size=batch_size,
                     epochs=epochs,
