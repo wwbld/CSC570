@@ -5,8 +5,9 @@ from keras.models import Sequential
 from keras.layers import Dense, Dropout, Flatten, Reshape
 from keras.layers import Conv2D, MaxPooling2D, BatchNormalization, Activation
 from keras.layers.advanced_activations import PReLU, LeakyReLU
-from keras.callbacks import TensorBoard
+from keras.utils import multi_gpu_model
 import matplotlib.pyplot as plt
+import tensorflow as tf
 from time import time
 import util
 
@@ -47,8 +48,7 @@ history = model.fit(training_data, training_target,
                     batch_size=batch_size,
                     epochs=epochs,
                     verbose=2,
-                    validation_data=(testing_data, testing_target),
-                    callbacks=[tensorboard])
+                    validation_data=(testing_data, testing_target))
 score = model.evaluate(testing_data, testing_target, verbose=0)
 print('Test loss: ', score[0])
 print('Test accuracy: ', score[1])

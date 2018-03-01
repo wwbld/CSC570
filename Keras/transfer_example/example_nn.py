@@ -52,3 +52,16 @@ history = model.fit(training_data, training_target,
 score = model.evaluate(testing_data, testing_target, verbose=0)
 print('Test loss: ', score[0])
 print('Test accuracy: ', score[1])
+        
+total = 0
+success = 0
+for i in range(len(testing_target)):
+    if testing_target[i] in training_target:
+        total += 1
+        predictions = model.predict(np.reshape(testing_data[i], (1,64,64,3)))
+        if np.argmax(predictions) == np.argmax(testing_target[i]):
+            success += 1
+print("FINAL ACCURACY IS: ", success*1.0/total)
+
+
+ 
