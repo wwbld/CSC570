@@ -68,6 +68,7 @@ def create_sample_file():
     myfile = open("samples.csv", 'w')
     writer = csv.writer(myfile)
     my_list = [0]*70 + [1]*25 + [2]*5
+    hashmap = {}
     for m in range(len(files)):
         with open(files[m]) as csvfile:
             temp = random.choice(my_list)
@@ -75,8 +76,14 @@ def create_sample_file():
                 for line in csvfile:
                     row = line.strip().split(",")
                     row[-1] = row[-1][1:]
-                    row.append(temp)
-                    writer.writerow(row)
+                    key = row[-1]
+                    if hashmap.has_key(key) and hashmap.get(key) < 100:
+                        row.append(temp)
+                        writer.writerow(row)
+                    elif hashmap.has_key(key) == False:
+                        hashmap[key] = 1
+                        row.append(temp)
+                        writer.writerow(row)
 
 def read_csv(filename):
     training_features = []
