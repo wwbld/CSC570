@@ -67,7 +67,7 @@ def create_sample_file():
              if isfile(join("./data", f))]
     myfile = open("samples.csv", 'w')
     writer = csv.writer(myfile)
-    my_list = [0]*70 + [1]*25 + [2]*5
+    my_list = [0]*74 + [1]*25 + [2]*1
     hashmap = {}
     for m in range(len(files)):
         with open(files[m]) as csvfile:
@@ -77,11 +77,14 @@ def create_sample_file():
                     row = line.strip().split(",")
                     row[-1] = row[-1][1:]
                     key = row[-1]
-                    if hashmap.has_key(key) and hashmap.get(key) < 100:
+                    if hashmap.has_key(key) and hashmap.get(key) and temp == 1 < 100:
                         row.append(temp)
                         writer.writerow(row)
-                    elif hashmap.has_key(key) == False:
+                    elif hashmap.has_key(key) == False and temp == 1:
                         hashmap[key] = 1
+                        row.append(temp)
+                        writer.writerow(row)
+                    elif temp == 2:
                         row.append(temp)
                         writer.writerow(row)
 
