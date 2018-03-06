@@ -30,7 +30,7 @@ testing_data = np.reshape(testing_data, (-1,64,64,3))
 
 # Use an encoder
 encoder = LabelEncoder()
-encoder.fit(training_target)
+encoder.fit(training_target + testing_target)
 encoded_Ytrain = encoder.transform(training_target)
 encoded_Ytest = encoder.transform(testing_target)
 
